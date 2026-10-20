@@ -20,6 +20,9 @@
     // Nơi viết thư — hiện ở dòng "…, ngày 20 tháng 10" và dấu bưu điện
     place: "Hà Nội",
 
+    // Dòng địa chỉ dưới tên người nhận trên phong bì
+    address: "tình yêu của anh",
+
     // Những lời chúc nhỏ viết trên mẩu giấy, trôi chậm trên mặt bàn (phía sau lá thư)
     floatingMessages: [
       "Chúc mừng 20/10",

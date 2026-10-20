@@ -20,6 +20,7 @@
   /* ---------- Cá nhân hóa ---------- */
   fill("[data-recipient]", cfg.recipient);
   fill("[data-place]", cfg.place);
+  fill("[data-address]", cfg.address);
   fill("[data-initial]", cfg.recipient.charAt(0).toUpperCase());
   fill("[data-postmark]", (cfg.place + " · 20.10 · ").toUpperCase());
   fill("[data-sender-line]", cfg.sender ? "Từ: " + cfg.sender : "");
