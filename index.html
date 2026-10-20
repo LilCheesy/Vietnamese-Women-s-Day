@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Gửi Em · 20/10</title>
+  <meta name="description" content="Một lá thư nhỏ viết tay nhân ngày 20/10.">
+  <meta name="theme-color" content="#2e2a26">
+  <link rel="icon" href="./images/icon.png" type="image/png">
+
+  <!-- Phông chữ: EB Garamond (chữ in) + Dancing Script (chữ viết tay) — cả hai đều có bộ tiếng Việt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Dancing+Script:wght@400;500;600&display=swap">
+
+  <!-- Giao diện -->
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/intro.css">
+  <link rel="stylesheet" href="./css/letter.css">
+  <link rel="stylesheet" href="./css/garden.css">
+  <link rel="stylesheet" href="./css/player.css">
+</head>
+
+<body class="is-loading is-locked">
+  <!-- Icon, bộ lọc và hình vẽ dùng chung -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Làm mép nét vẽ hơi run, không tròn trịa như máy vẽ -->
+      <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <radialGradient id="wax" cx="42%" cy="38%" r="70%">
+        <stop offset="0" stop-color="#8f3f3a"/>
+        <stop offset="0.7" stop-color="#7a332f"/>
+        <stop offset="1" stop-color="#5f2623"/>
+      </radialGradient>
+    </defs>
+
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8.2 5.6c0-.8.9-1.3 1.6-.8l9 6.3c.6.4.6 1.3 0 1.7l-9 6.4c-.7.5-1.6 0-1.6-.8Z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7.4 5.2h2.9v13.6H7.6ZM13.8 5.3h2.8l-.1 13.5h-2.8Z"/></symbol>
+    <symbol id="i-prev" viewBox="0 0 24 24"><path d="M6.4 5.5h1.9v13H6.5ZM19 5.9v12.3c0 .6-.7 1-1.2.6L9.6 12.6a.8.8 0 0 1 0-1.3l8.2-6.1c.5-.4 1.2 0 1.2.7Z"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="M17.6 5.5h-1.9v13h1.8ZM5 5.9v12.3c0 .6.7 1 1.2.6l8.2-6.2a.8.8 0 0 0 0-1.3L6.2 5.2C5.7 4.8 5 5.2 5 5.9Z"/></symbol>
+    <symbol id="i-repeat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M16.8 3 20 6.2l-3.2 3.1M4 11.4V10c0-2.1 1.7-3.8 3.9-3.8H20M7.2 21 4 17.8l3.2-3.1M20 12.6V14c0 2.1-1.7 3.8-3.9 3.8H4"/></symbol>
+    <symbol id="i-repeat-one" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M16.8 3 20 6.2l-3.2 3.1M4 11.4V10c0-2.1 1.7-3.8 3.9-3.8H20M7.2 21 4 17.8l3.2-3.1M20 12.6V14c0 2.1-1.7 3.8-3.9 3.8H4M11.2 10.4l1.3-.9v5"/></symbol>
+    <symbol id="i-shuffle" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M16.6 3.6h3.8v3.8M4 19.8 20.2 3.8M20.4 16.4v3.9h-3.8M14.8 14.9l5.4 5.3M4 4.2l4.9 4.9"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M4 6.2h11M4 11h11M4 15.8h7"/><path d="M18 8.6v7.1a2.6 2.6 0 1 1-1.8-2.5V6.1l4.6-1.1v2.4Z"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="m6 9.2 6 5.8 6-5.8"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M6.3 6.1 17.8 17.9M17.6 6.2 6.2 17.7"/></symbol>
+
+    <!-- Nhành hoa ép khô: vẽ tay, cánh không đều -->
+    <symbol id="sprig" viewBox="0 0 120 170">
+      <g filter="url(#rough)">
+        <!-- thân & cành -->
+        <path d="M66 166c-2-19-5-33-7-50-1.6-14-5.4-31-4-49 .5-8 .2-14-1.2-20" fill="none" stroke="#6f6a48" stroke-width="1.7" stroke-linecap="round"/>
+        <path d="M58.6 104c6.5-8 13-14 17.6-26 1.3-3.4 2.6-6.6 4-9" fill="none" stroke="#6f6a48" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M61 136c-5-3-9-8-12.5-13" fill="none" stroke="#6f6a48" stroke-width="1" stroke-linecap="round"/>
+        <!-- lá -->
+        <path d="M49 123c-7-1-14 2-21-3.5 4.6-5.5 13.7-6.4 21.2 2.4Z" fill="#8b8a5c" fill-opacity=".72"/>
+        <path d="M48.6 122.4c-6-1.6-11.6-2.4-17.8-2.8" fill="none" stroke="#5f5d3c" stroke-width=".55" stroke-opacity=".6"/>
+        <path d="M59.4 104.6c7.8-.6 16-4.6 20.6-12.8-9.4-.8-16.5 4.6-20.6 12.4Z" fill="#7f8156" fill-opacity=".7"/>
+        <path d="M60.2 104.2c5.6-3 11-7 18.2-11.4" fill="none" stroke="#5f5d3c" stroke-width=".55" stroke-opacity=".6"/>
+        <path d="M57.4 82c-6.2-3.6-9.4-10.4-9-17.6 6.8 2.8 9.6 9.8 9.2 17.4Z" fill="#8b8a5c" fill-opacity=".62"/>
+        <!-- nụ -->
+        <path d="M80.4 69c-4.6-4.4-5.4-12.4-.6-18.6 4.4 4.8 5.6 12.8.6 18.6Z" fill="#b5716b" fill-opacity=".8"/>
+        <path d="M80.2 69.4c-3.4-1.6-5.6-4.4-6.2-8M80.6 69.2c2.8-1.8 4.8-4.6 5.4-8" fill="none" stroke="#6f6a48" stroke-width=".9" stroke-linecap="round"/>
+        <!-- năm cánh hoa, chồng lên nhau như đã bị ép phẳng -->
+        <g fill="#c48e88" fill-opacity=".74" stroke="#8d524d" stroke-width=".55" stroke-opacity=".5">
+          <path d="M53.6 44.6c-8.8-3-17.8-10.6-15.6-19.8 3.6-6 12.6-3.2 14.6 5.4 1.2 4.8 1.6 9.6 1 14.4Z"/>
+          <path d="M54.2 44c1.4-9.8 5.4-19.8 13.4-21.6 7.4.6 6.6 9.6.4 14.4-4.2 3.4-8.6 5.8-13.8 7.2Z"/>
+          <path d="M54.6 45.2c9.2-2.2 19.8-1.4 22.6 5.8.2 8-9.2 7.6-15 2.8-3.4-2.6-5.8-5.4-7.6-8.6Z"/>
+          <path d="M54 45.8c2.6 8.4 2.8 18.6-3.4 22.2-7.4.8-8-8.6-4.6-14.4 2.2-3.4 4.8-5.8 8-7.8Z"/>
+          <path d="M53.4 45.4c-6.6 3.4-16.6 7.6-22 2.6-3-7.2 5.2-10.2 11.2-8 4 1.4 7.6 3 10.8 5.4Z"/>
+        </g>
+        <g fill="none" stroke="#9a5c56" stroke-width=".5" stroke-opacity=".55" stroke-linecap="round">
+          <path d="M53.4 43c-3-5-6.4-9.6-10.4-14"/><path d="M55 43c2.6-5 5.6-9.4 9.6-13.4"/>
+          <path d="M56 46c5 .8 10 2.4 14.6 5"/><path d="M54 47.6c-.6 5-2 9.6-4.4 14"/><path d="M52.4 45.6c-5 1-10 1.8-15.4 1.8"/>
+        </g>
+        <!-- nhụy -->
+        <g fill="#8a6b3c" fill-opacity=".85">
+          <circle cx="54" cy="45" r="2.3"/><circle cx="57.4" cy="43.2" r=".9"/><circle cx="51.2" cy="42.6" r=".8"/>
+          <circle cx="56.6" cy="47.8" r=".8"/><circle cx="50.8" cy="47.2" r=".7"/>
+        </g>
+      </g>
+    </symbol>
+  </svg>
+
+  <!-- Mặt bàn (khăn lanh sẫm màu) -->
+  <div class="table" aria-hidden="true"></div>
+
+  <!-- Lời chúc trên mẩu giấy, trôi phía sau lá thư -->
+  <div id="notes" class="notes" aria-hidden="true"></div>
+
+  <!-- Thảm cỏ hoa dại dọc mép dưới -->
+  <svg id="meadow" class="meadow" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+
+  <!-- Mở đầu: phong thư dán sáp -->
+  <section id="intro" class="intro" aria-label="Phong thư">
+    <button id="envelope" class="envelope" type="button" aria-label="Mở lá thư">
+      <span class="envelope__inside"></span>
+      <span class="envelope__letter">
+        <span class="envelope__letter-date"><span data-place>Hà Nội</span>, ngày 20 tháng 10</span>
+        <span class="envelope__letter-line">Gửi <span data-recipient>Em</span> thân yêu,</span>
+      </span>
+      <svg class="envelope__pocket" viewBox="0 0 142 100" preserveAspectRatio="none" aria-hidden="true">
+        <path class="pk-side" d="M0 0 L69 56.5 L0 100 Z"/>
+        <path class="pk-side pk-side--r" d="M142 0 L73 56.5 L142 100 Z"/>
+        <path class="pk-bottom" d="M0 100 L70.6 50.4 L142 100 Z"/>
+        <path class="pk-seam" d="M.4 99.6c23-16.6 47-33.6 70.2-49.2 23.4 15.8 47.6 32.8 71 49.2"/>
+      </svg>
+      <span class="envelope__to">Gửi <span data-recipient>Em</span></span>
+      <span class="envelope__flap">
+        <span class="envelope__flap-face envelope__flap-face--out"></span>
+        <span class="envelope__flap-face envelope__flap-face--in"></span>
+        <span class="seal" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <path fill="url(#wax)" d="M51 5c9 .4 15 5 23 7.6 9.6 3.4 15.6 10.8 18.4 20.8 1.8 6.4 4.8 11.4 3.8 18.6-1 7.4-4.4 12.6-6.2 19-3 9.6-10.4 17-20.4 20.4-6.6 2.2-11.4 5-18.6 4.4-7.8-.6-13-3.6-19.4-6.4C22 85.6 13.4 79 9.6 68.6 7.2 62 3.6 56.6 4.6 48.8c1-7.4 4.6-12.4 7.2-19C15.6 20 23.8 12 34 8.6 40 6.6 44.4 4.8 51 5Z"/>
+            <circle cx="50" cy="50" r="29.5" fill="none" stroke="#561f1d" stroke-opacity=".55" stroke-width="2.2"/>
+            <circle cx="50.6" cy="50.8" r="29.5" fill="none" stroke="#a25550" stroke-opacity=".35" stroke-width="1"/>
+            <text class="seal__initial seal__initial--hi" x="51" y="62" text-anchor="middle" data-initial>E</text>
+            <text class="seal__initial" x="50" y="61" text-anchor="middle" data-initial>E</text>
+          </svg>
+        </span>
+      </span>
+    </button>
+
+    <p class="intro__hint">
+      chạm vào con dấu để mở thư
+      <span>(nhớ bật loa lên nhé)</span>
+    </p>
+  </section>
+
+  <!-- Nội dung chính: lá thư nằm trên bàn -->
+  <main id="stage" class="stage" aria-hidden="true">
+    <div class="desk">
+      <!-- Phong bì đã mở, mặt trước có tem và dấu bưu điện -->
+      <div class="sent" aria-hidden="true">
+        <span class="sent__from" data-sender-line></span>
+        <span class="stamp">
+          <span class="stamp__face">
+            <span class="stamp__art"><svg><use href="#sprig"/></svg></span>
+            <span class="stamp__country">Việt Nam</span>
+            <span class="stamp__value">4000đ</span>
+          </span>
+        </span>
+        <svg class="postmark" viewBox="0 0 150 90">
+          <defs><path id="pm-arc" d="M24 45a21 21 0 1 1 42 0a21 21 0 1 1-42 0"/></defs>
+          <circle cx="45" cy="45" r="28" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="45" cy="45" r="16" fill="none" stroke="currentColor" stroke-width=".9"/>
+          <text class="postmark__ring"><textPath href="#pm-arc" data-postmark>HÀ NỘI · HÀ NỘI ·</textPath></text>
+          <text class="postmark__date" x="45" y="48.5" text-anchor="middle">20·10</text>
+          <path d="M78 30c10-4 18 4 28 0s18-4 28 0M78 41c10-4 18 4 28 0s18-4 28 0M78 52c10-4 18 4 28 0s18-4 28 0M78 63c10-4 18 4 28 0s18-4 28 0" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span class="sent__to">
+          <span class="sent__to-label">Gửi:</span> <span data-recipient>Em</span>
+          <span class="sent__place" data-place>Hà Nội</span>
+        </span>
+      </div>
+
+      <!-- Bó hoa khô buộc dây gai nằm trên bàn -->
+      <svg id="bouquet" class="bouquet" viewBox="0 0 300 360" aria-hidden="true"></svg>
+
+      <article id="letter" class="paper" aria-label="Lá thư">
+        <!-- Nhành hoa ép, dán bằng băng keo giấy -->
+        <div class="paper__flower" aria-hidden="true">
+          <svg><use href="#sprig"/></svg>
+          <span class="tape"></span>
+        </div>
+
+        <p class="paper__date"><span data-place>Hà Nội</span>, ngày 20 tháng 10</p>
+
+        <h1 class="paper__greeting">
+          Gửi <span class="paper__name"><span data-recipient>Em</span><svg class="scribble" viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 9.4c18-3.6 38-5.4 60-4.6 17 .6 33 1.6 54-1.8M14 11.6c20-2 44-2.6 68-1.4"/></svg></span> thân yêu,
+        </h1>
+
+        <div id="letter-body" class="paper__body"></div>
+
+        <div class="paper__end">
+          <p class="paper__sign" id="sign-line">Với tất cả yêu thương,</p>
+          <p class="paper__signname" id="sign-name"></p>
+        </div>
+      </article>
+
+      <button id="replay" class="replay" type="button">đọc lại từ đầu</button>
+    </div>
+  </main>
+
+  <!-- Cánh hoa rơi & bụi trong ánh đèn -->
+  <canvas id="drift" class="drift" aria-hidden="true"></canvas>
+
+  <!-- Trình phát nhạc: đĩa than nhỏ ở góc, mở ra thành bảng điều khiển -->
+  <aside id="player" class="player" data-state="collapsed" data-mode="all" aria-label="Trình phát nhạc">
+    <button class="player__mini" type="button" aria-label="Mở trình phát nhạc" aria-expanded="false" aria-controls="player-panel">
+      <span class="disc disc--mini"><img class="disc__cover" src="./images/music/music-2.jpg" alt=""></span>
+      <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+
+    <div id="player-panel" class="player__panel">
+      <header class="player__head">
+        <span class="player__label">Đang phát</span>
+        <button class="icon-btn icon-btn--sm" id="player-collapse" type="button" aria-label="Thu gọn trình phát"><svg><use href="#i-down"/></svg></button>
+      </header>
+
+      <div class="player__now">
+        <span class="disc"><img class="disc__cover" id="player-cover" src="./images/music/music-2.jpg" alt=""></span>
+        <div class="player__meta">
+          <p class="player__name" id="player-name">Flower Dance (Piano)</p>
+          <p class="player__artist" id="player-artist">DJ Okawari</p>
+        </div>
+      </div>
+
+      <div class="player__progress">
+        <input id="player-seek" class="seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Tua bài hát">
+        <div class="player__time"><span id="player-current">0:00</span><span id="player-duration">0:00</span></div>
+      </div>
+
+      <div class="player__controls">
+        <button class="icon-btn" id="player-mode" type="button" aria-label="Chế độ phát: lặp danh sách" title="Lặp danh sách">
+          <svg class="mode-all"><use href="#i-repeat"/></svg>
+          <svg class="mode-one"><use href="#i-repeat-one"/></svg>
+          <svg class="mode-shuffle"><use href="#i-shuffle"/></svg>
+        </button>
+        <button class="icon-btn" id="player-prev" type="button" aria-label="Bài trước"><svg><use href="#i-prev"/></svg></button>
+        <button class="play-btn" id="player-toggle" type="button" aria-label="Phát">
+          <svg class="ic-play"><use href="#i-play"/></svg>
+          <svg class="ic-pause"><use href="#i-pause"/></svg>
+        </button>
+        <button class="icon-btn" id="player-next" type="button" aria-label="Bài tiếp theo"><svg><use href="#i-next"/></svg></button>
+        <button class="icon-btn" id="player-list-toggle" type="button" aria-label="Danh sách bài hát" aria-expanded="false" aria-controls="playlist"><svg><use href="#i-list"/></svg></button>
+      </div>
+
+      <div class="playlist" id="playlist">
+        <div class="playlist__head">
+          <span>Danh sách phát</span>
+          <button class="icon-btn icon-btn--sm" id="playlist-close" type="button" aria-label="Đóng danh sách"><svg><use href="#i-close"/></svg></button>
+        </div>
+        <ul class="playlist__items" id="playlist-items"></ul>
+      </div>
+    </div>
+
+    <audio id="audio" preload="metadata"></audio>
+  </aside>
+
+  <!-- Kịch bản: cấu hình trước, khởi động sau cùng -->
+  <script src="./js/config.js"></script>
+  <script src="./js/letter.js"></script>
+  <script src="./js/flora.js"></script>
+  <script src="./js/drift.js"></script>
+  <script src="./js/notes.js"></script>
+  <script src="./js/player.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>

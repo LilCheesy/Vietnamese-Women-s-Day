@@ -1,0 +1,137 @@
+/* =========================================================
+   Nền tảng: màu, phông chữ, chất liệu giấy, mặt bàn, bố cục chung
+   ========================================================= */
+:root {
+  /* Giấy & mực */
+  --paper: #f2ebdd;
+  --paper-edge: #e6dcc8;
+  --kraft: #c4a57c;
+  --kraft-dark: #a9875e;
+  --ink: #28304a;          /* mực xanh đen của bút máy */
+  --ink-soft: rgba(40, 48, 74, 0.72);
+  --print: #2f2924;        /* chữ in, nâu đen */
+  --print-soft: rgba(47, 41, 36, 0.62);
+
+  /* Màu nhấn duy nhất: hồng khô / đỏ hoa hồng ép */
+  --rose: #a0524c;
+  --rose-soft: rgba(160, 82, 76, 0.75);
+
+  /* Mặt bàn */
+  --table: #2e2a26;
+  --table-light: #3a352f;
+  --table-text: rgba(236, 226, 208, 0.62);
+
+  /* Phông */
+  --font-hand: "Dancing Script", "Segoe Script", "Brush Script MT", cursive;
+  --font-serif: "EB Garamond", Garamond, "Times New Roman", Georgia, serif;
+
+  /* Hạt giấy và vết loang — tạo bằng SVG noise, không cần ảnh ngoài */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .26 0 0 0 0 .18 0 0 0 -1.1 .62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.008' numOctaves='4' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .42 0 0 0 0 .25 0 0 0 -.45 .26'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+
+  /* Bóng như giấy nằm trên mặt bàn */
+  --lay: 0 1px 1px rgba(20, 14, 8, 0.28), 0 6px 10px -4px rgba(20, 14, 8, 0.35), 0 22px 40px -18px rgba(10, 6, 2, 0.6);
+
+  --ease: cubic-bezier(0.25, 0.8, 0.3, 1);
+  --gutter: 16px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow-x: hidden;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--print);
+  background: var(--table);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.is-locked {
+  overflow: hidden;
+}
+
+svg {
+  display: block;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 1.5px dashed currentColor;
+  outline-offset: 4px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ---------- Mặt bàn: khăn lanh sẫm, ánh đèn bàn hắt nhẹ ---------- */
+.table {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--table);
+  background-image:
+    radial-gradient(120% 80% at 38% 22%, rgba(255, 236, 205, 0.075), transparent 62%),
+    radial-gradient(140% 120% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.35)),
+    var(--grain),
+    repeating-linear-gradient(0deg, rgba(255, 245, 225, 0.022) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 3px);
+  background-size: auto, auto, 240px 240px, auto, auto;
+}
+
+/* ---------- Sân khấu chính: ẩn cho tới khi mở thư ---------- */
+.stage {
+  position: relative;
+  z-index: 2;
+  visibility: hidden;
+}
+
+.is-revealed .stage {
+  visibility: visible;
+}
+
+/* ---------- Giảm chuyển động ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0s !important;
+  }
+}

@@ -1,0 +1,156 @@
+/* =========================================================
+   Cỏ hoa dại, bó hoa khô, lời chúc trên mẩu giấy, cánh hoa rơi
+   ========================================================= */
+
+/* ---------- Thảm cỏ hoa dọc mép dưới ---------- */
+.meadow {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;             /* màn hình lớn: nằm sau lá thư */
+  width: 100%;
+  height: 240px;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.meadow .grow {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scale(0.7, 0);
+}
+
+.is-revealed .meadow .grow {
+  animation: grow 2.2s cubic-bezier(0.2, 0.7, 0.3, 1) calc(0.6s + var(--g)) both;
+}
+
+.meadow .sway {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: sway var(--t) ease-in-out var(--d) infinite alternate;
+}
+
+@keyframes grow {
+  from {
+    transform: scale(0.7, 0);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes sway {
+  from {
+    transform: rotate(calc(var(--a) * -1));
+  }
+
+  to {
+    transform: rotate(var(--a));
+  }
+}
+
+/* Điện thoại: thảm cỏ thấp, nằm trước lá thư như một khung viền dưới */
+@media (max-width: 639px) {
+  .meadow {
+    z-index: 6;
+    height: 66px;
+  }
+}
+
+/* ---------- Bó hoa khô buộc dây gai ---------- */
+.bouquet {
+  position: absolute;
+  z-index: 0;
+  left: 4%;
+  bottom: 96px;
+  width: 170px;
+  height: auto;
+  aspect-ratio: 300 / 360;
+  overflow: visible;
+  transform: rotate(-64deg);
+  filter: drop-shadow(0 3px 2px rgba(10, 6, 2, 0.45)) drop-shadow(0 10px 14px rgba(10, 6, 2, 0.3));
+  opacity: 0;
+  transition: opacity 1s ease 0.8s;
+}
+
+.is-revealed .bouquet {
+  opacity: 1;
+}
+
+@media (min-width: 1000px) {
+  .bouquet {
+    left: 90px;
+    right: auto;
+    top: 420px;
+    bottom: auto;
+    width: 290px;
+    transform: rotate(-58deg);
+  }
+}
+
+/* ---------- Lời chúc trên mẩu giấy xé ---------- */
+.notes {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.note {
+  position: absolute;
+  max-width: 270px;
+  padding: 8px 18px 10px;
+  font-family: var(--font-hand);
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 1.3;
+  color: var(--ink);
+  background-color: var(--tone, #efe7d8);
+  background-image: var(--grain);
+  background-size: 240px 240px;
+  /* mép trái/phải xé tay */
+  clip-path: polygon(2% 4%, 30% 0, 62% 3%, 97% 0, 100% 30%, 97% 58%, 100% 100%, 64% 96%, 33% 100%, 3% 97%, 0 66%, 3% 35%);
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35));
+  opacity: 0;
+  animation: note-float var(--t, 13s) linear forwards;
+}
+
+@keyframes note-float {
+  0% {
+    opacity: 0;
+    transform: translate(0, 12px) rotate(var(--r));
+  }
+
+  14% {
+    opacity: 0.95;
+  }
+
+  78% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), -90px) rotate(calc(var(--r) + 3deg));
+  }
+}
+
+@media (max-width: 639px) {
+  .note {
+    max-width: 220px;
+    padding: 7px 15px 9px;
+    font-size: 21px;
+  }
+}
+
+/* ---------- Cánh hoa rơi ---------- */
+.drift {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 7;
+  pointer-events: none;
+}

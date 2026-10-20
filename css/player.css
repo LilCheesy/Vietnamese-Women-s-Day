@@ -1,0 +1,538 @@
+/* =========================================================
+   Trình phát nhạc đĩa than ở góc: thu gọn thành chiếc đĩa nhỏ
+   xoay khi phát, mở ra thành bảng màu nâu cà phê ấm.
+   ========================================================= */
+.player {
+  --esp: rgba(38, 29, 24, 0.985);
+  --esp-2: #2d231e;
+  --cream: #efe6d6;
+  --cream-soft: rgba(239, 230, 214, 0.62);
+  --cream-faint: rgba(239, 230, 214, 0.4);
+  --rose-light: #d29a92;
+
+  position: fixed;
+  right: calc(10px + var(--safe-r));
+  bottom: calc(8px + var(--safe-b));
+  z-index: 10;
+  font-family: var(--font-serif);
+  color: var(--cream);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease 1s, visibility 0s linear 1.8s;
+}
+
+/* Chỉ hiện sau khi đã mở thư */
+.is-revealed .player {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.8s ease 1s;
+}
+
+/* ---------- Đĩa than xoay ---------- */
+.disc {
+  position: relative;
+  flex: none;
+  display: block;
+  width: 78px;
+  aspect-ratio: 1;
+  padding: 10px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 52%, rgba(255, 240, 220, 0.07) 53%, transparent 56%),
+    repeating-radial-gradient(circle, #1c1512 0 1.5px, #261d19 1.5px 3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 240, 220, 0.06);
+  animation: disc-spin 8s linear infinite paused;
+}
+
+.disc__cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: saturate(0.85) sepia(0.12);
+}
+
+/* Lỗ giữa đĩa */
+.disc::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 13%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--esp-2);
+  box-shadow: 0 0 0 2px rgba(239, 230, 214, 0.75);
+  transform: translate(-50%, -50%);
+}
+
+.player.is-playing .disc {
+  animation-play-state: running;
+}
+
+@keyframes disc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Dạng thu gọn ---------- */
+.player__mini {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--esp);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 18px -4px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(239, 230, 214, 0.12);
+  transition: transform 0.35s var(--ease), opacity 0.25s ease;
+}
+
+.player__mini:hover {
+  transform: translateY(-2px);
+}
+
+.disc--mini {
+  width: 46px;
+  padding: 5px;
+  box-shadow: none;
+}
+
+/* Cột sóng nhạc nhỏ */
+.eq {
+  position: absolute;
+  right: -3px;
+  top: -3px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 18px;
+  padding: 4px 5px;
+  border-radius: 999px;
+  background: var(--rose);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.3s, transform 0.3s var(--ease);
+}
+
+.eq i,
+.track__eq i {
+  width: 2.5px;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--cream);
+  transform-origin: bottom;
+  animation: eq-bounce 0.9s ease-in-out infinite alternate;
+}
+
+.eq i:nth-child(2),
+.track__eq i:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.eq i:nth-child(3),
+.track__eq i:nth-child(3) {
+  animation-delay: -0.6s;
+}
+
+.player.is-playing .eq {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes eq-bounce {
+  from {
+    transform: scaleY(0.3);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* ---------- Bảng điều khiển ---------- */
+.player__panel {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: min(330px, calc(100vw - 20px));
+  padding: 14px 18px 18px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: var(--esp);
+  background-image: radial-gradient(120% 70% at 0% 0%, rgba(210, 154, 146, 0.12), transparent 60%), var(--grain);
+  background-size: auto, 240px 240px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 18px 40px -12px rgba(0, 0, 0, 0.65), inset 0 0 0 1px rgba(239, 230, 214, 0.1);
+  transform-origin: 100% 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.9);
+  transition: opacity 0.25s ease, transform 0.4s var(--ease), visibility 0s linear 0.4s;
+}
+
+.player[data-state="expanded"] .player__panel {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.3s ease, transform 0.45s var(--ease);
+}
+
+.player[data-state="expanded"] .player__mini {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.7);
+}
+
+.player__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.player__label,
+.playlist__head {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cream-faint);
+}
+
+.player__now {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.player__meta {
+  min-width: 0;
+}
+
+.player__name,
+.player__artist {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player__name {
+  font-style: italic;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.25;
+  color: var(--cream);
+}
+
+.player__artist {
+  margin-top: 2px;
+  font-size: 14.5px;
+  color: var(--cream-soft);
+}
+
+/* ---------- Thanh tua ---------- */
+.player__progress {
+  margin-top: 16px;
+}
+
+.seek {
+  --p: 0%;
+  display: block;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: none;
+}
+
+.seek::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--rose-light) var(--p), rgba(239, 230, 214, 0.16) var(--p));
+}
+
+.seek::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px;
+  height: 13px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: var(--cream);
+  box-shadow: 0 0 0 3px rgba(210, 154, 146, 0.35), 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s;
+}
+
+.seek:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+.seek::-moz-range-track {
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(239, 230, 214, 0.16);
+}
+
+.seek::-moz-range-progress {
+  height: 3px;
+  border-radius: 3px;
+  background: var(--rose-light);
+}
+
+.seek::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--cream);
+  box-shadow: 0 0 0 3px rgba(210, 154, 146, 0.35), 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.player__time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--cream-faint);
+}
+
+/* ---------- Nút điều khiển ---------- */
+.player__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: var(--cream-soft);
+  transition: color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.icon-btn svg {
+  width: 21px;
+  height: 21px;
+  fill: currentColor;
+}
+
+.icon-btn:hover {
+  color: var(--cream);
+  background: rgba(239, 230, 214, 0.07);
+}
+
+.icon-btn:active {
+  transform: scale(0.9);
+}
+
+.icon-btn--sm {
+  width: 32px;
+  height: 32px;
+  margin-right: -6px;
+}
+
+.icon-btn--sm svg {
+  width: 18px;
+  height: 18px;
+}
+
+.play-btn {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: var(--cream);
+  background: var(--rose);
+  box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 235, 225, 0.2);
+  transition: transform 0.25s var(--ease), background 0.25s;
+}
+
+.play-btn:hover {
+  background: #ac5b54;
+  transform: translateY(-1px);
+}
+
+.play-btn:active {
+  transform: scale(0.95);
+}
+
+.play-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.play-btn .ic-pause,
+.player.is-playing .play-btn .ic-play {
+  display: none;
+}
+
+.player.is-playing .play-btn .ic-pause {
+  display: block;
+}
+
+/* Biểu tượng chế độ phát */
+#player-mode svg {
+  display: none;
+}
+
+.player[data-mode="all"] #player-mode .mode-all,
+.player[data-mode="one"] #player-mode .mode-one,
+.player[data-mode="shuffle"] #player-mode .mode-shuffle {
+  display: block;
+}
+
+.player[data-mode="one"] #player-mode,
+.player[data-mode="shuffle"] #player-mode {
+  color: var(--rose-light);
+}
+
+/* ---------- Danh sách phát ---------- */
+.playlist {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 10px 10px;
+  background-color: var(--esp-2);
+  background-image: var(--grain);
+  background-size: 240px 240px;
+  transform: translateY(100%);
+  visibility: hidden;
+  transition: transform 0.45s var(--ease), visibility 0s linear 0.45s;
+}
+
+.playlist.is-open {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.45s var(--ease);
+}
+
+.playlist__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 0 8px;
+  margin-bottom: 6px;
+}
+
+.playlist__items {
+  flex: 1;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(239, 230, 214, 0.2) transparent;
+}
+
+.track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 7px 8px;
+  border-radius: 10px;
+  text-align: left;
+  transition: background 0.2s;
+}
+
+.track:hover {
+  background: rgba(239, 230, 214, 0.06);
+}
+
+.track.is-active {
+  background: rgba(160, 82, 76, 0.26);
+}
+
+.track__cover {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  object-fit: cover;
+  filter: saturate(0.85) sepia(0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.track__meta {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+
+.track__name,
+.track__artist {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track__name {
+  font-size: 15.5px;
+  line-height: 1.3;
+  color: var(--cream);
+}
+
+.track.is-active .track__name {
+  color: var(--rose-light);
+}
+
+.track__artist {
+  font-style: italic;
+  font-size: 13px;
+  color: var(--cream-faint);
+}
+
+.track__time {
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--cream-faint);
+}
+
+/* Bài đang phát: thay thời lượng bằng cột sóng nhỏ */
+.track__eq {
+  display: none;
+  align-items: flex-end;
+  gap: 2px;
+  width: 16px;
+  height: 12px;
+}
+
+.player.is-playing .track.is-active .track__eq {
+  display: flex;
+}
+
+.player.is-playing .track.is-active .track__time {
+  display: none;
+}
+
+.track__eq i {
+  background: var(--rose-light);
+}
+
+@media (min-width: 640px) {
+  .player {
+    right: calc(24px + var(--safe-r));
+    bottom: calc(22px + var(--safe-b));
+  }
+
+  .player__mini {
+    width: 64px;
+    height: 64px;
+  }
+
+  .disc--mini {
+    width: 54px;
+    padding: 6px;
+  }
+}

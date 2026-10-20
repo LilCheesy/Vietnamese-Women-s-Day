@@ -1,0 +1,274 @@
+/* =========================================================
+   Phong thư giấy kraft, dán sáp — chạm để mở
+   ========================================================= */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gutter);
+  transition: opacity 0.6s ease 0.25s;
+}
+
+.is-loading .intro {
+  opacity: 0;
+}
+
+.intro.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Phong thư (mặt sau, có nắp) ---------- */
+.envelope {
+  --w: min(86vw, 400px);
+  position: relative;
+  width: var(--w);
+  aspect-ratio: 142 / 100;
+  perspective: 1400px;
+  transform: rotate(-2.2deg);
+  transition: transform 1s var(--ease), opacity 0.8s ease;
+  cursor: pointer;
+  /* bóng mềm trên mặt bàn */
+  filter: drop-shadow(0 1px 1px rgba(20, 12, 4, 0.35)) drop-shadow(0 16px 22px rgba(10, 6, 2, 0.45));
+}
+
+.is-loading .envelope {
+  transform: rotate(-2.2deg) translateY(14px);
+}
+
+.envelope:focus-visible {
+  outline-color: var(--table-text);
+  outline-offset: 10px;
+}
+
+/* Lòng phong bì (thấy được khi nắp mở) */
+.envelope__inside {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  background-color: #9c7c55;
+  background-image: var(--grain), linear-gradient(180deg, rgba(0, 0, 0, 0.18), transparent 50%);
+  background-size: 240px 240px, auto;
+}
+
+/* Lá thư bên trong — trượt lên khi mở */
+.envelope__letter {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 6%;
+  height: 88%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 7% 7%;
+  border-radius: 1px;
+  background-color: var(--paper);
+  background-image: var(--grain);
+  background-size: 240px 240px;
+  box-shadow: 0 0 0 1px rgba(80, 60, 30, 0.06), 0 -2px 6px rgba(0, 0, 0, 0.08);
+  font-family: var(--font-hand);
+  color: var(--ink);
+  text-align: left;
+  transition: transform 0.9s var(--ease) 0.6s;
+}
+
+.envelope__letter-date {
+  align-self: flex-end;
+  font-size: calc(var(--w) * 0.04);
+  color: var(--ink-soft);
+}
+
+.envelope__letter-line {
+  margin-top: 6%;
+  font-size: calc(var(--w) * 0.055);
+}
+
+/* Mặt túi phong bì: hai vạt bên và vạt dưới */
+.envelope__pocket {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pk-side {
+  fill: #c09f75;
+}
+
+.pk-side--r {
+  fill: #bb9a70;
+}
+
+.pk-bottom {
+  fill: var(--kraft);
+}
+
+.pk-seam {
+  fill: none;
+  stroke: rgba(70, 48, 22, 0.32);
+  stroke-width: 0.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Hạt giấy & vết loang nhẹ phủ lên mặt túi */
+.envelope::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: 3px;
+  background-image: var(--grain), var(--mottle);
+  background-size: 240px 240px, 600px 600px;
+  opacity: 0.45;
+  mix-blend-mode: multiply;
+}
+
+/* Tên người nhận viết tay ở góc phong bì */
+.envelope__to {
+  position: absolute;
+  right: 11%;
+  bottom: 9%;
+  z-index: 4;
+  font-family: var(--font-hand);
+  font-size: calc(var(--w) * 0.068);
+  line-height: 1;
+  color: var(--ink);
+  transform: rotate(-4deg);
+  opacity: 0.9;
+}
+
+/* Nắp phong bì: lật lên khi mở */
+.envelope__flap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 60%;
+  z-index: 5;
+  transform-origin: 50% 0;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.45, 0.05, 0.3, 1), z-index 0s linear 0.42s;
+}
+
+.envelope__flap-face {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 0, 100% 0, 51.5% 97%, 49.5% 98%);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.envelope__flap-face--out {
+  background-color: #c7a87f;
+  background-image: var(--grain), var(--mottle), linear-gradient(180deg, transparent 60%, rgba(60, 38, 14, 0.12));
+  background-size: 240px 240px, 600px 600px, auto;
+  /* bóng mép nắp đổ xuống thân phong bì */
+  filter: drop-shadow(0 1.5px 1px rgba(50, 30, 10, 0.35));
+}
+
+.envelope__flap-face--in {
+  background-color: #b49067;
+  background-image: var(--grain);
+  background-size: 240px 240px;
+  transform: rotateX(180deg);
+}
+
+/* Con dấu sáp: mờ, không bóng loáng */
+.seal {
+  position: absolute;
+  left: 50%;
+  top: 98%;
+  width: calc(var(--w) * 0.2);
+  aspect-ratio: 1;
+  transform: translate(-50%, -54%) rotate(8deg);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  filter: drop-shadow(0 1.5px 1.5px rgba(40, 10, 8, 0.45));
+}
+
+.seal svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.seal__initial {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 34px;
+  fill: #57201e;
+}
+
+.seal__initial--hi {
+  fill: #a65752;
+  opacity: 0.55;
+}
+
+/* ---------- Gợi ý ---------- */
+.intro__hint {
+  align-self: center;
+  width: var(--w, min(86vw, 400px));
+  max-width: min(86vw, 400px);
+  margin-top: 34px;
+  padding-left: 4px;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--table-text);
+  transition: opacity 0.4s ease;
+}
+
+.intro__hint span {
+  display: block;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.intro.is-open .intro__hint {
+  opacity: 0;
+}
+
+/* ---------- Mở thư ---------- */
+.intro.is-open .envelope {
+  cursor: default;
+}
+
+.intro.is-open .envelope__flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.intro.is-open .envelope__letter {
+  transform: translateY(-46%);
+}
+
+/* Phong bì được đặt sang một bên, lá thư trải ra */
+.intro.is-leaving .envelope {
+  opacity: 0;
+  transform: translate(-8vw, 26vh) rotate(-9deg) scale(0.92);
+}
+
+@media (min-width: 960px) {
+  .intro {
+    align-items: flex-start;
+    padding-left: calc(50% - 300px);
+  }
+
+  .envelope {
+    --w: 440px;
+  }
+
+  .intro__hint {
+    align-self: flex-start;
+    width: auto;
+    margin-left: 18px;
+  }
+}
